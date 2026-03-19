@@ -1,0 +1,8 @@
+limine/
+bin/
+obj/
+iso_root/
+
+.ccls-cache/
+compile_commands.json
+.gdb_history
