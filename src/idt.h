@@ -22,5 +22,5 @@ struct idt_ptr {
 } __attribute__((packed));
 
 void idt_set_gate(size_t index, uint64_t offset, segment_selector_t selector, uint8_t ist, uint8_t type_attributes);
-void init_idt();
+void idt_init();
 #endif

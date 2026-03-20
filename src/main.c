@@ -14,6 +14,7 @@
 #include <gdt.h>
 #include <limine.h>
 #include <mem.h>
+#include <idt.h>
 
 // clang-format off
 //
@@ -51,24 +52,14 @@ void kmain(void) {
 	struct screen_color_8bit color = {.red = 0, .green = 255, .blue = 0};
 	struct screen_pos pos = {.x = 0, .y = 0};
 	draw_rect(color, pos, curr_framebuffer->height, curr_framebuffer->width);
+	printf_limited("\033[48;2;255;0;0m %s testing \033[0m", "hello");
 
-	printf_limited("curr_framebuffer addr: %p", curr_framebuffer->address);
-	printf_limited("addr: %p", curr_framebuffer->address);
-	printf_limited("addr0padded: %010p", (void*)17);
-	printf_limited("addr padded: %10p", (void*)11);
-	printf_limited("overflow_byte: %hhx", 256);
-	printf_limited("byte : %hhx", -122);
-	printf_limited("byte0padded: %010hhx", -122);
-	printf_limited("byte padded: %10hhx", -122);
-	printf_limited("d: %hhd", -122);
-	printf_limited("d0padded: %010hhd", -122);
-	printf_limited("d padded: %10hhd", -122);
-	printf_limited("string: %s", "printf is so fucking complex");
-	printf_limited("char: %c", 'c');
-	printf_limited("");
-	printf_limited("testing multiple prints: %016ld;%c%hhd;%s;%016p;%010hx\n\nhello", 0x1337, 'c', 4,"test multi\nline", &limine_base_revision, 16000);
-	printf_limited("testing multiple prints: %016ld;%c%hhd;%s;%016p;%010hx\n\nhello", 0x1337, 'c', 4,"test multi\nline", &limine_base_revision, 16000);
-	assert(1 != 1);
+	
+	idt_init();
+	volatile int b = 0;
+	volatile int a = 1 / b;
+
+	assert(a != 1);
 	// We're done, just hang...
 	hcf();
 }
