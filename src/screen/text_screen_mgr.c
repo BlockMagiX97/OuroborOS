@@ -62,6 +62,7 @@ char *parse_true_color(const char *str, size_t max_len, struct screen_color_8bit
 }
 
 // currently supports only color escape codes and in limited matter
+// return ptr to end byte in escape seq
 char *parse_escape_sequence(const char *str, size_t max_len, struct screen_color_8bit *fg, struct screen_color_8bit *bg,
 			    bool *set_fg, bool *set_bg) {
 	safety_assert_no_print(max_len > 2);
@@ -77,8 +78,8 @@ char *parse_escape_sequence(const char *str, size_t max_len, struct screen_color
 		mode = antou64(str, num_digits);
 	safety_assert_no_print(max_len > num_digits);
 	char end_char = str[num_digits];
-	max_len -= num_digits + 1;
-	str += num_digits + 1;
+	max_len -= num_digits;
+	str += num_digits;
 	struct screen_color_8bit *color;
 	const char *end_ptr = str;
 	switch (end_char) {
@@ -105,7 +106,7 @@ char *parse_escape_sequence(const char *str, size_t max_len, struct screen_color
 				*set_fg = true;
 			__attribute__((fallthrough));
 		case 48:
-			end_ptr = parse_true_color(str, max_len, color);
+			end_ptr = parse_true_color(str+1, max_len-1, color);
 			if (set_bg != NULL)
 				*set_bg = true;
 			break;

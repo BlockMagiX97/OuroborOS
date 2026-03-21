@@ -4,9 +4,15 @@
 #include <libk/kpanic.h>
 #define RED_FG "\033[38;2;255;0;0m"
 #define RED_BG "\033[48;2;255;0;0m"
+
+#define WHITE_FG "\033[38;2;255;255;255m"
+#define WHITE_BG "\033[48;2;255;255;255m"
+
+#define BLACK_FG "\033[38;2;0;0;0m"
+#define BLACK_BG "\033[48;2;0;0;0m"
 #define RESET "\033[0m"
 __attribute__((noreturn)) void kpanic_interrupt(const struct interrupt_frame *in_fr, const char *msg) {
-	printf_limited("hello: "RESET "test" RED_BG "KERNEL PANIC: %s" RESET, msg);
+	printf_limited(RED_BG WHITE_FG "KERNEL PANIC:" BLACK_BG RED_FG " %s" RESET, msg);
 	printf_limited("");
 	printf_limited("RAX= 0x%016lx  RBX= 0x%016lx  RCX= 0x%016lx  RDX= 0x%016lx", in_fr->rax, in_fr->rbx, in_fr->rcx, in_fr->rdx);
 	printf_limited("RDI= 0x%016lx  RSI= 0x%016lx  RBP= 0x%016lx  RSP= 0x%016lx", in_fr->rax, in_fr->rbx, in_fr->rbp, in_fr->userrsp);

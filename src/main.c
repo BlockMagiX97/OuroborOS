@@ -48,14 +48,8 @@ void kmain(void) {
 	if (init_screen() < 0) {
 		hcf();
 	}
-
-	struct screen_color_8bit color = {.red = 0, .green = 255, .blue = 0};
-	struct screen_pos pos = {.x = 0, .y = 0};
-	draw_rect(color, pos, curr_framebuffer->height, curr_framebuffer->width);
-	printf_limited("\033[48;2;255;0;0m %s testing \033[0m", "hello");
-
-	
 	idt_init();
+
 	volatile int b = 0;
 	volatile int a = 1 / b;
 
