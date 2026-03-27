@@ -3,8 +3,8 @@
 #include <libk/assert.h>
 
 #include <arch/x86_64/gdt.h>
-#include <arch/curr/interrupts/idt.h>
-#include <arch/curr/interrupts/isr.h>
+#include <arch/x86_64/interrupts/idt.h>
+#include <arch/x86_64/interrupts/isr.h>
 
 extern void idt_load(struct idt_ptr* idt_ptr);
 struct interrupt_descriptor_entry idt_table[NUM_IDT_ENTRIES] = {0};

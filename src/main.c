@@ -11,10 +11,7 @@
 #include <screen/screen.h>
 #include <screen/text_screen_mgr.h>
 
-#include <gdt.h>
-#include <limine.h>
-#include <mem.h>
-#include <idt.h>
+#include <arch/curr/init.h>
 
 // clang-format off
 //
@@ -43,12 +40,10 @@ void kmain(void) {
 		hcf();
 	}
 
-	init_hhdm();
-	init_gdt(); // finally done it was a pain
 	if (init_screen() < 0) {
 		hcf();
 	}
-	idt_init();
+	init_boot_cpu();
 
 	volatile int b = 0;
 	volatile int a = 1 / b;
