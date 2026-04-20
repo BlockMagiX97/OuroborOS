@@ -4,7 +4,7 @@ My toy OS. I wanted to test my programming skills and learn how PCs work
 
 ## TODO
 
-- finish IDT
+- update Makefile to include QEMU flags
 - physical memory manager
 - virtual memory manager (paging)
 - kernel heap

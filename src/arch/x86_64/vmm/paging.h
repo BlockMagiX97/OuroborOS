@@ -1,0 +1,11 @@
+#ifndef OUROBOROS_VMM_PAGING_H
+#define OUROBOROS_VMM_PAGING_H
+
+#define PAGE_FRAME_SIZE 4096
+
+enum page_size {
+	PS_4KiB = PAGE_FRAME_SIZE,
+	PS_2MiB = PAGE_FRAME_SIZE * 512,
+	PS_1GiB = PAGE_FRAME_SIZE * 512 * 512,
+};
+#endif

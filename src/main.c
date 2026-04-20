@@ -12,6 +12,7 @@
 #include <screen/text_screen_mgr.h>
 
 #include <arch/curr/init.h>
+#include <arch/curr/spinlock.h>
 
 // clang-format off
 //
@@ -44,6 +45,45 @@ void kmain(void) {
 		hcf();
 	}
 	init_boot_cpu();
+
+	uint64_t flags[5];
+	rwspinlock_t rwlock;
+	rwspinlock_acquire_read(&rwlock, flags+0);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
+	rwspinlock_acquire_read(&rwlock, flags+1);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
+	rwspinlock_acquire_read(&rwlock, flags+2);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
+	rwspinlock_release_read(&rwlock, flags+1);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
+	rwspinlock_release_read(&rwlock, flags+2);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
+	rwspinlock_release_read(&rwlock, flags+0);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
+	rwspinlock_acquire_write(&rwlock, flags+3);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
+	rwspinlock_release_write(&rwlock, flags+3);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
+	rwspinlock_acquire_write(&rwlock, flags+4);
+	printf_limited("num_readers: %d", rwlock.num_readers);
+	printf_limited("want_write: %hhd", rwlock.want_write);
+	printf_limited("");
 
 	volatile int b = 0;
 	volatile int a = 1 / b;
