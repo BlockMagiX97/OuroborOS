@@ -35,6 +35,7 @@ __attribute__((used, section(".limine_requests_end")))
 static volatile uint64_t limine_requests_end_marker[] = LIMINE_REQUESTS_END_MARKER;
 
 // clang-format on
+
 void kmain(void) {
 	// Ensure the bootloader actually understands our base revision (see spec).
 	if (LIMINE_BASE_REVISION_SUPPORTED(limine_base_revision) == false) {
@@ -46,49 +47,6 @@ void kmain(void) {
 	}
 	init_boot_cpu();
 
-	uint64_t flags[5];
-	rwspinlock_t rwlock;
-	rwspinlock_acquire_read(&rwlock, flags+0);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-	rwspinlock_acquire_read(&rwlock, flags+1);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-	rwspinlock_acquire_read(&rwlock, flags+2);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-	rwspinlock_release_read(&rwlock, flags+1);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-	rwspinlock_release_read(&rwlock, flags+2);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-	rwspinlock_release_read(&rwlock, flags+0);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-	rwspinlock_acquire_write(&rwlock, flags+3);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-	rwspinlock_release_write(&rwlock, flags+3);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-	rwspinlock_acquire_write(&rwlock, flags+4);
-	printf_limited("num_readers: %d", rwlock.num_readers);
-	printf_limited("want_write: %hhd", rwlock.want_write);
-	printf_limited("");
-
-	volatile int b = 0;
-	volatile int a = 1 / b;
-
-	assert(a != 1);
 	// We're done, just hang...
 	hcf();
 }
