@@ -1,6 +1,6 @@
 #include <libk/util.h>
 #include <libk/wrap_builtin.h>
-#include <screen/text_screen_mgr.h>
+#include <output/debug.h>
 
 // can be in an include gaurd
 #ifndef OUROBOROS_ASSERT_H
@@ -20,7 +20,7 @@
 #define safety_assert(expr) \
 	do { \
 		if (UNLIKELY(!(expr))) { \
-			weak_puts("\033[0m\033[38;2;255;0;0mSafety assertion failed:" __FILE__ ":" STRINGIFY_VALUE(__LINE__)": " #expr "\033[0m"); \
+			send_debug_output("\033[0m\033[38;2;255;0;0mSafety assertion failed:" __FILE__ ":" STRINGIFY_VALUE(__LINE__)": " #expr "\033[0m"); \
 			hcf(); \
 		} \
 	} while (0)
@@ -56,7 +56,7 @@
 #define assert(expr) \
 	do { \
 		if (UNLIKELY(!(expr))) { \
-			weak_puts("\033[38;2;255;0;0mAssertion failed:" __FILE__ ":" STRINGIFY_VALUE(__LINE__) ": " #expr "\033[0m"); \
+			send_debug_output("\033[38;2;255;0;0mAssertion failed:" __FILE__ ":" STRINGIFY_VALUE(__LINE__) ": " #expr "\033[0m"); \
 			hcf(); \
 		} \
 	} while (0)

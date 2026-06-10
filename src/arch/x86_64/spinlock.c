@@ -31,7 +31,7 @@ bool spinlock_try_acquire(spinlock_t *sl, flags_t *flags) {
 }
 void spinlock_release(spinlock_t *sl, flags_t *flags) {
 	if (!spinlock_test_acquired(sl)) {
-		kpanic("Attempted to release spinlock that was already released");
+		kpanic("Attempted to release spinlock that was already released", "");
 	}
 	if (flags == NULL)
 		releaseLock(sl);
@@ -71,7 +71,7 @@ void rwspinlock_acquire_write(rwspinlock_t *sl, flags_t *flags) {
 }
 void rwspinlock_release_write(rwspinlock_t *sl, flags_t *flags) {
 	if ((sl->want_write & 1) != 1) {
-		kpanic("Attempted to release write on rwspinlock that was already released");
+		kpanic("Attempted to release write on rwspinlock that was already released", "");
 	}
 	if (flags == NULL)
 		releaseWriteLock(sl);

@@ -28,6 +28,16 @@ typedef struct __attribute__((packed)) {
 		};
 } rwspinlock_t;
 
+#define SPINLOCK_INIT_LOCKED \
+	((spinlock_t){ \
+		.locked=1 \
+	})
+#define RWSPINLOCK_INIT_WRITE_LOCKED \
+	((rwspinlock_t){ \
+		.num_readers=0, \
+	 	.locked=1 \
+	 })
+
 
 bool spinlock_test_acquired(spinlock_t *sl);
 void spinlock_acquire(spinlock_t *sl, flags_t *flags);

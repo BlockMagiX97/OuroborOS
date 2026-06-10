@@ -137,14 +137,9 @@ $(IMG_FILE): bin/$(OUTPUT)
 
 .PHONY: run
 run: $(IMG_FILE)
-	qemu-system-x86_64 $^ -display sdl
+	qemu-system-x86_64 $^ -nographic
 run-debug: $(IMG_FILE)
-	qemu-system-x86_64 -s -S $^ -display sdl -d int -no-reboot &
-	tmux split-window -h "pwndbg --eval-command=\"target remote localhost:1234\" bin/$(OUTPUT)"
-run-vnc: $(IMG_FILE)
-	qemu-system-x86_64 $^ -vnc localhost:10
-run-vnc-debug: $(IMG_FILE)
-	qemu-system-x86_64 -s -S $^ -vnc localhost:10 -d int -no-reboot -no-shutdown &
+	qemu-system-x86_64 -s -S $^ -nographic -d int -no-reboot &
 	tmux split-window -h "pwndbg --eval-command=\"target remote localhost:1234\" bin/$(OUTPUT)"
 
 # Link rules for the final executable.

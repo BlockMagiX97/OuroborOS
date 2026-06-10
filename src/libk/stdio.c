@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <output/debug.h>
 
 struct format_options {
 	bool twice_size;
@@ -158,11 +159,10 @@ int conv_d(char *dst, size_t maxlenght, int64_t conv, const struct format_option
 	}
 	return (int)total_length;
 }
-int printf_limited(const char *format, ...) {
+int _printf_limited(void (*send_buffer_func)(const char*), const char *format, va_list args) {
 	char output_buf[INTERNAL_BUFFER_LENGTH] = {0};
 	size_t i = 0;
-	va_list args;
-	va_start(args, format);
+
 	struct format_options fmt = {
 	    .twice_size = false, .half_size = false, .quater_size = false, .zero_pad = false, .pad_width = 0};
 	bool format_specifier_mode = false;
@@ -332,10 +332,25 @@ int printf_limited(const char *format, ...) {
 			break;
 		}
 	}
-	va_end(args);
-	weak_puts(output_buf);
+	send_buffer_func(output_buf);
 #undef REM_LENGTH
 #undef RESET_FLAGS_STATE
 #undef RESET_FMT_STATE
 	return i;
+}
+int printf_limited(const char *format, ...) {
+	int ret;
+	va_list args;
+	va_start(args, format);
+	ret = _printf_limited(send_debug_output, format, args);
+	va_end(args);
+	return ret;
+}
+int printf_limited_custom_func(void (*send_buffer_func)(const char*), const char *format, ...) {
+	int ret;
+	va_list args;
+	va_start(args, format);
+	ret = _printf_limited(send_buffer_func, format, args);
+	va_end(args);
+	return ret;
 }

@@ -6,13 +6,13 @@
 #include <libk/stdio.h>
 #include <libk/string.h>
 #include <libk/util.h>
+#include <libk/typedef.h>
 
-#include <screen/font.h>
-#include <screen/screen.h>
-#include <screen/text_screen_mgr.h>
+#include <output/debug.h>
 
 #include <arch/curr/init.h>
 #include <arch/curr/spinlock.h>
+#include <limine.h>
 
 // clang-format off
 //
@@ -42,11 +42,14 @@ void kmain(void) {
 		hcf();
 	}
 
-	if (init_screen() < 0) {
+	if (! IS_SUCCESS(init_debug_output())) {
 		hcf();
 	}
 	init_boot_cpu();
-
+	volatile int a = 1;
+	volatile int b = 0;
+	printf_limited("a: *%p = %d\nb: *%p = %d\n", &a, a, &b, b);
+	a = a / b;
 	// We're done, just hang...
 	hcf();
 }
