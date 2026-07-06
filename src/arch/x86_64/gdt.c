@@ -66,7 +66,7 @@ void init_gdt() {
 	// 64 bit, ring 0, data segment writable: segment selector 16=0x10
 	gdt_set_gate(kernel_data_segment_sel/8, 0, 0xffffffff, GDT_A_PRESENT | GDT_A_DLP(0) | GDT_A_NOT_SYSTEM  | GDT_A_READABLE_WRITABLE | GDT_A_ACCESSED,
 		     GDT_F_GRANULARITY | GDT_F_LONG);
-	gdtptr.base = ((vaddr_t)&gdt);
+	gdtptr.base = ((uint64_t)&gdt);
 	gdtptr.limit = (sizeof(gdt) - 1);
 	// hope for the best
 	load_gdt(&gdtptr);

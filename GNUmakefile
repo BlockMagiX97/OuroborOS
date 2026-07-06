@@ -139,8 +139,8 @@ $(IMG_FILE): bin/$(OUTPUT)
 run: $(IMG_FILE)
 	qemu-system-x86_64 $^ -nographic
 run-debug: $(IMG_FILE)
-	qemu-system-x86_64 -s -S $^ -nographic -d int -no-reboot &
-	tmux split-window -h "pwndbg --eval-command=\"target remote localhost:1234\" bin/$(OUTPUT)"
+	tmux split-window -h "pwndbg --eval-command=\"target remote localhost:1234\" bin/$(OUTPUT)" &
+	qemu-system-x86_64 -s -S $^ -nographic -d int -no-reboot
 
 # Link rules for the final executable.
 bin/$(OUTPUT): GNUmakefile linker.lds $(OBJ)

@@ -225,6 +225,7 @@ int _printf_limited(void (*send_buffer_func)(const char*), const char *format, v
 						fmt.twice_size = false;
 						break;
 					}
+					return -1;
 				case '0':
 					if (collecting_fmt_pad_width) {
 						fmt.pad_width = fmt.pad_width * 10 + (*format - '0');

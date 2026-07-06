@@ -6,4 +6,5 @@
 #define UNLIKELY(x) 	__builtin_expect(!!(x), 0)
 #define UNREACHABLE	__builtin_unreachable()
 #define MUL_OVERFLOW(x, y, res)	(__builtin_mul_overflow((x), (y), (res)))
+#define same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
 #endif

@@ -32,6 +32,11 @@ typedef struct __attribute__((packed)) {
 	((spinlock_t){ \
 		.locked=1 \
 	})
+
+#define SPINLOCK_INIT_UNLOCKED \
+	((spinlock_t){ \
+		.locked=0 \
+	})
 #define RWSPINLOCK_INIT_WRITE_LOCKED \
 	((rwspinlock_t){ \
 		.num_readers=0, \

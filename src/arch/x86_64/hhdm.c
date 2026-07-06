@@ -17,8 +17,8 @@ void init_hhdm() {
 }
 
 vaddr_t hhdm_phys_to_virt(paddr_t phys_addr) {
-	return phys_addr + offset_hhdm;
+	return (vaddr_t)(phys_addr + offset_hhdm);
 }
 paddr_t hhdm_virt_to_phys(vaddr_t virt_addr) {
-	return virt_addr - offset_hhdm;
+	return (paddr_t)((uint64_t)virt_addr - offset_hhdm);
 }

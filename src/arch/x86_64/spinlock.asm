@@ -13,7 +13,7 @@ acquireLockWithFlags:
 
 global acquireLock
 acquireLock:
-.try_lock
+.try_lock:
 	lock bts dword [rdi],0        ;Attempt to acquire the lock (in case lock is uncontended)
 	jc .spin_with_pause
 	ret
@@ -40,7 +40,7 @@ acquireTryLockWithFlags:
 	pop rax
 	mov [rsi], rax ; we saved flags
 	mov eax, 1
-.ret
+.ret:
 	ret
 
 acquireTryLock:
@@ -50,7 +50,7 @@ acquireTryLock:
 	jmp .ret
 .success:
 	mov eax, 1
-.ret
+.ret:
 	ret
 	
 
@@ -85,7 +85,7 @@ acquireReadLockWithFlags:
 	; abuse falltrough
 global acquireReadLock
 acquireReadLock:
-.wait_no_write
+.wait_no_write:
 	test byte [rdi+4], 1
 	jz .try_add_reader
 	pause
@@ -97,7 +97,7 @@ acquireReadLock:
 	lock sub dword [rdi], 1
 	pause
 	jmp .wait_no_write
-.lock_acquired
+.lock_acquired:
 	ret
 
 
@@ -109,7 +109,7 @@ releaseReadLock:
 global releaseReadLockWithFlags
 releaseReadLockWithFlags:
 	lock sub dword [rdi], 1
-.lock_released
+.lock_released:
 	mov rax, [rsi] ; restore the flags
 	push rax
 	popfq
@@ -140,7 +140,7 @@ acquireWriteLock:
 	je .lock_acquired
 	pause
 	jmp .wait_no_read
-.lock_acquired
+.lock_acquired:
 	ret
 
 global releaseWriteLock
@@ -151,7 +151,7 @@ releaseWriteLock:
 global releaseWriteLockWithFlags
 releaseWriteLockWithFlags:
 	mov byte [rdi+4],0
-.lock_released
+.lock_released:
 	mov rax, [rsi] ; restore the flags
 	push rax
 	popfq

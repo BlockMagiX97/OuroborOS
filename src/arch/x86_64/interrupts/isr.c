@@ -97,7 +97,7 @@ struct interrupt_frame *isr_dispatch(struct interrupt_frame *in_fr) {
 void isr_install_exceptions() {
 
 #define SET_GATE_RING_0(index, type) \
-	do {idt_set_gate((index), (vaddr_t)isr_##index, kernel_code_segment_sel, 0, IDT_TA_GATE_TYPE_##type | IDT_TA_DLP(0) | IDT_TA_PRESENT);} while(0)
+	do {idt_set_gate((index), (uint64_t /* vaddr */)isr_##index, kernel_code_segment_sel, 0, IDT_TA_GATE_TYPE_##type | IDT_TA_DLP(0) | IDT_TA_PRESENT);} while(0)
 
 	SET_GATE_RING_0(0, FAULT);     // Divide error
 	SET_GATE_RING_0(1, TRAP);      // Debug exception
