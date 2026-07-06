@@ -1,5 +1,5 @@
 #include <libk/string.h>
-#include <libk/wrap_builtin.h>
+#include <compiler/wrap_builtin.h>
 #include <limits.h>
 
 // GCC and Clang reserve the right to generate calls to the following

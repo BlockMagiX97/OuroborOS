@@ -1,12 +1,12 @@
+#include <compiler/wrap_builtin.h>
 #include <libk/assert.h>
 #include <libk/stdio.h>
 #include <libk/util.h>
-#include <libk/wrap_builtin.h>
+#include <output/debug.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <output/debug.h>
 
 struct format_options {
 	bool twice_size;
@@ -25,7 +25,7 @@ int conv_ptr(char *dst, size_t maxlenght, const void *conv, const struct format_
 			num_length++;
 		}
 	}
-	width = MAX(width + num_length, fmt->pad_width+2);
+	width = MAX(width + num_length, fmt->pad_width + 2);
 	if (maxlenght < width) {
 		return -1;
 	}
@@ -38,9 +38,9 @@ int conv_ptr(char *dst, size_t maxlenght, const void *conv, const struct format_
 		for (size_t j = 0; j < num_length; j++) {
 			uint64_t tmp = (con >> (j * 4)) & 0b1111;
 			if (tmp >= 10)
-				dst[i + (num_length-(j+1))] = 'a' + (tmp - 10);
+				dst[i + (num_length - (j + 1))] = 'a' + (tmp - 10);
 			else
-				dst[i + (num_length-(j+1))] = '0' + tmp;
+				dst[i + (num_length - (j + 1))] = '0' + tmp;
 		}
 
 	} else {
@@ -54,9 +54,9 @@ int conv_ptr(char *dst, size_t maxlenght, const void *conv, const struct format_
 		for (size_t j = 0; j < num_length; j++) {
 			uint64_t tmp = (con >> (j * 4)) & 0b1111;
 			if (tmp >= 10)
-				dst[i + (num_length-(j+1))] = 'a' + (tmp - 10);
+				dst[i + (num_length - (j + 1))] = 'a' + (tmp - 10);
 			else
-				dst[i + (num_length-(j+1))] = '0' + tmp;
+				dst[i + (num_length - (j + 1))] = '0' + tmp;
 		}
 	}
 	return width;
@@ -82,9 +82,9 @@ int conv_x(char *dst, size_t maxlenght, uint64_t conv, const struct format_optio
 		for (size_t j = 0; j < num_length; j++) {
 			uint64_t tmp = (con >> (j * 4)) & 0b1111;
 			if (tmp >= 10)
-				dst[i + (num_length-(j+1))] = 'a' + (tmp - 10);
+				dst[i + (num_length - (j + 1))] = 'a' + (tmp - 10);
 			else
-				dst[i + (num_length-(j+1))] = '0' + tmp;
+				dst[i + (num_length - (j + 1))] = '0' + tmp;
 		}
 
 	} else {
@@ -94,9 +94,9 @@ int conv_x(char *dst, size_t maxlenght, uint64_t conv, const struct format_optio
 		for (size_t j = 0; j < num_length; j++) {
 			uint64_t tmp = (con >> (j * 4)) & 0b1111;
 			if (tmp >= 10)
-				dst[i + (num_length-(j+1))] = 'a' + (tmp - 10);
+				dst[i + (num_length - (j + 1))] = 'a' + (tmp - 10);
 			else
-				dst[i + (num_length-(j+1))] = '0' + tmp;
+				dst[i + (num_length - (j + 1))] = '0' + tmp;
 		}
 	}
 	return width;
@@ -113,7 +113,7 @@ int conv_d(char *dst, size_t maxlenght, int64_t conv, const struct format_option
 	// can be smaller but i dont know how many digits has 64 bit number +1
 #define NUM_BUF_LEN 64
 	char buff[NUM_BUF_LEN] = {0};
-	char *buf_ptr = buff+NUM_BUF_LEN-1;
+	char *buf_ptr = buff + NUM_BUF_LEN - 1;
 
 	register uint64_t tmp = 0;
 	while ((tmp = (number_part / 10)) > 0) {
@@ -128,38 +128,38 @@ int conv_d(char *dst, size_t maxlenght, int64_t conv, const struct format_option
 	if (total_length > maxlenght)
 		return -1;
 	if (fmt->zero_pad) {
-		size_t i=0;
+		size_t i = 0;
 		if (conv < 0) {
 			dst[i] = '-';
 			i++;
 		}
 		// not width because that includes minus and we already have it
-		for (;i<(total_length-num_length);i++) {
+		for (; i < (total_length - num_length); i++) {
 			dst[i] = '0';
 		}
-		size_t j=0;
-		for (;i<total_length;i++) {
+		size_t j = 0;
+		for (; i < total_length; i++) {
 			dst[i] = buf_ptr[j];
 			j++;
 		}
 	} else {
-		size_t i=0;
-		for (;i<(total_length-width);i++) {
+		size_t i = 0;
+		for (; i < (total_length - width); i++) {
 			dst[i] = ' ';
 		}
 		if (conv < 0) {
 			dst[i] = '-';
 			i++;
 		}
-		size_t j=0;
-		for (;i<total_length;i++) {
+		size_t j = 0;
+		for (; i < total_length; i++) {
 			dst[i] = buf_ptr[j];
 			j++;
 		}
 	}
 	return (int)total_length;
 }
-int _printf_limited(void (*send_buffer_func)(const char*), const char *format, va_list args) {
+int _printf_limited(void (*send_buffer_func)(const char *), const char *format, va_list args) {
 	char output_buf[INTERNAL_BUFFER_LENGTH] = {0};
 	size_t i = 0;
 
@@ -176,7 +176,7 @@ int _printf_limited(void (*send_buffer_func)(const char*), const char *format, v
 		fmt.zero_pad = false; \
 		fmt.pad_width = 0; \
 	} while(0)
-	
+
 #define RESET_FLAGS_STATE \
 	do { \
 		format_specifier_mode = false; \
@@ -258,7 +258,7 @@ int _printf_limited(void (*send_buffer_func)(const char*), const char *format, v
 					return -1;
 				case 'p':
 					written_bytes =
-					    conv_ptr(output_buf+i, REM_LENGTH, va_arg(args, const void *), &fmt);
+					    conv_ptr(output_buf + i, REM_LENGTH, va_arg(args, const void *), &fmt);
 					if (written_bytes < 0) {
 						return -1;
 					}
@@ -267,19 +267,21 @@ int _printf_limited(void (*send_buffer_func)(const char*), const char *format, v
 					break;
 				case 'x':
 					if (fmt.quater_size) {
-						// type promotions generate warnings, user should not use with invalid values
+						// type promotions generate warnings, user should not use with invalid
+						// values
 						uint8_t val = (va_arg(args, unsigned int));
-						written_bytes = conv_x(output_buf+i, REM_LENGTH,val, &fmt);
+						written_bytes = conv_x(output_buf + i, REM_LENGTH, val, &fmt);
 					} else if (fmt.quater_size) {
-						// type promotions generate warnings, user should not use with invalid values
+						// type promotions generate warnings, user should not use with invalid
+						// values
 						uint16_t val = (va_arg(args, unsigned int));
-						written_bytes = conv_x(output_buf+i, REM_LENGTH,val, &fmt);
+						written_bytes = conv_x(output_buf + i, REM_LENGTH, val, &fmt);
 					} else if (fmt.twice_size) {
 						uint64_t val = (va_arg(args, uint64_t));
-						written_bytes = conv_x(output_buf+i, REM_LENGTH,val, &fmt);
+						written_bytes = conv_x(output_buf + i, REM_LENGTH, val, &fmt);
 					} else {
 						uint32_t val = (va_arg(args, uint32_t));
-						written_bytes = conv_x(output_buf+i, REM_LENGTH,val, &fmt);
+						written_bytes = conv_x(output_buf + i, REM_LENGTH, val, &fmt);
 					}
 					if (written_bytes < 0) {
 						return -1;
@@ -289,19 +291,21 @@ int _printf_limited(void (*send_buffer_func)(const char*), const char *format, v
 					break;
 				case 'd':
 					if (fmt.quater_size) {
-						// type promotions generate warnings, user should not use with invalid values
+						// type promotions generate warnings, user should not use with invalid
+						// values
 						int8_t val = (va_arg(args, int));
-						written_bytes = conv_d(output_buf+i, REM_LENGTH,val, &fmt);
+						written_bytes = conv_d(output_buf + i, REM_LENGTH, val, &fmt);
 					} else if (fmt.quater_size) {
-						// type promotions generate warnings, user should not use with invalid values
+						// type promotions generate warnings, user should not use with invalid
+						// values
 						int16_t val = (va_arg(args, int));
-						written_bytes = conv_d(output_buf+i, REM_LENGTH,val, &fmt);
+						written_bytes = conv_d(output_buf + i, REM_LENGTH, val, &fmt);
 					} else if (fmt.twice_size) {
 						int64_t val = (va_arg(args, int64_t));
-						written_bytes = conv_d(output_buf+i, REM_LENGTH,val, &fmt);
+						written_bytes = conv_d(output_buf + i, REM_LENGTH, val, &fmt);
 					} else {
 						int32_t val = (va_arg(args, int32_t));
-						written_bytes = conv_d(output_buf+i, REM_LENGTH,val, &fmt);
+						written_bytes = conv_d(output_buf + i, REM_LENGTH, val, &fmt);
 					}
 					if (written_bytes < 0) {
 						return -1;
@@ -312,14 +316,14 @@ int _printf_limited(void (*send_buffer_func)(const char*), const char *format, v
 				case 's':
 					string = (va_arg(args, const char *));
 					while (*string != '\0') {
-						if (i>=REM_LENGTH) {
+						if (i >= REM_LENGTH) {
 							return -1;
 						}
 						output_buf[i] = *string;
 						string++;
 						i++;
 					}
-					
+
 					RESET_FLAGS_STATE;
 					break;
 				case 'c':
@@ -347,7 +351,7 @@ int printf_limited(const char *format, ...) {
 	va_end(args);
 	return ret;
 }
-int printf_limited_custom_func(void (*send_buffer_func)(const char*), const char *format, ...) {
+int printf_limited_custom_func(void (*send_buffer_func)(const char *), const char *format, ...) {
 	int ret;
 	va_list args;
 	va_start(args, format);

@@ -1,10 +1,11 @@
-#include <libk/util.h>
-#include <libk/wrap_builtin.h>
+#include <arch/curr/hcf.h>
+#include <arch/curr/kpanic.h>
+#include <compiler/wrap_builtin.h>
 #include <output/debug.h>
 
 // can be in an include gaurd
-#ifndef OUROBOROS_ASSERT_H
-#define OUROBOROS_ASSERT_H
+#ifndef OUROBOROS_LIBK_ASSERT_H
+#define OUROBOROS_LIBK_ASSERT_H
 
 #define ___STRINGIFY_VALUE___(x) #x
 #define STRINGIFY_VALUE(x) ___STRINGIFY_VALUE___(x)
@@ -20,8 +21,7 @@
 #define safety_assert(expr) \
 	do { \
 		if (UNLIKELY(!(expr))) { \
-			send_debug_output("\033[0m\033[38;2;255;0;0mSafety assertion failed:" __FILE__ ":" STRINGIFY_VALUE(__LINE__)": " #expr "\033[0m"); \
-			hcf(); \
+			kpanic("Safety assertion failed:" __FILE__ ":"  STRINGIFY_VALUE(__LINE__)": " #expr , ""); \
 		} \
 	} while (0)
 #endif
@@ -56,8 +56,7 @@
 #define assert(expr) \
 	do { \
 		if (UNLIKELY(!(expr))) { \
-			send_debug_output("\033[38;2;255;0;0mAssertion failed:" __FILE__ ":" STRINGIFY_VALUE(__LINE__) ": " #expr "\033[0m"); \
-			hcf(); \
+			kpanic("Assertion failed:" __FILE__ ":"  STRINGIFY_VALUE(__LINE__)": " #expr , ""); \
 		} \
 	} while (0)
 #endif

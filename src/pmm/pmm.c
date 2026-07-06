@@ -4,7 +4,8 @@
 
 #include <libk/string.h>
 #include <libk/stdio.h>
-#include <libk/wrap_builtin.h>
+
+#include <compiler/wrap_builtin.h>
 
 #include <arch/curr/hhdm.h>
 #include <arch/curr/kpanic.h>
@@ -130,15 +131,18 @@ void init_pmm() {
 
 	paddr_t highest_usable_addr = PADDR_INVALID;
 	// get minimum needed size
-	uint64_t last_backed_entry;
+	uint64_t last_backed_entry_index;
 	for (uint64_t i = mem_map_req.response->entry_count; i-- > 0;) {
 		struct limine_memmap_entry *entry = mem_map_req.response->entries[i];
 		if (MEMMAP_NEEDS_PFD(entry->type)) {
 			highest_usable_addr = entry->base + entry->length;
-			last_backed_entry = i;
+			last_backed_entry_index = i;
 			break;
 		}
 	}
+	if (highest_usable_addr == PADDR_INVALID) {
+		kpanic("NO USABLE OR BOOTLOADER_RECLAIMABLE REGIONS", "");
+	};
 	uint64_t num_pfds = ALIGN_UP_PAGE_FRAME(highest_usable_addr) >> PAGE_FRAME_SHIFT;
 	uint64_t size = num_pfds * sizeof(struct pfd);
 
@@ -163,7 +167,7 @@ found_backing:
 	// init pfndb
 	memset(pfndb, 0, size);
 
-	for (uint64_t i = 0; i < last_backed_entry; i++) {
+	for (uint64_t i = 0; i < last_backed_entry_index; i++) {
 		struct limine_memmap_entry *entry = mem_map_req.response->entries[i];
 
 #define FOR_LOOP_ENTRY_LENGHT \

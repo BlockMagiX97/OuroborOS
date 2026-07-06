@@ -1,22 +1,13 @@
 #include <libk/assert.h>
-#include <libk/wrap_builtin.h>
 #include <libk/typedef.h>
+#include <libk/data_structures/red_black_tree.h>
+
 #include <stdbool.h>
 #include <stddef.h>
 
-enum rb_color { RB_RED, RB_BLACK };
-struct rb_node {
-	struct rb_node *right;
-	struct rb_node *left;
-	struct rb_node *parent;
-	enum rb_color color;
-};
-struct rb_tree {
-	struct rb_node *root;
-};
-#define RB_TREE_INIT {.root = NULL}
+#include <compiler/wrap_builtin.h>
 
-void rb_right_rotate(struct rb_node *node, struct rb_tree *tree) {
+inline static void rb_right_rotate(struct rb_node *node, struct rb_tree *tree) {
 	struct rb_node *parent = node->parent;
 	struct rb_node *left_child = node->left;
 
@@ -41,7 +32,7 @@ void rb_right_rotate(struct rb_node *node, struct rb_tree *tree) {
 	left_child->right = node;
 	node->parent = left_child;
 }
-void rb_left_rotate(struct rb_node *node, struct rb_tree *tree) {
+inline static void rb_left_rotate(struct rb_node *node, struct rb_tree *tree) {
 	struct rb_node *parent = node->parent;
 	struct rb_node *right_child = node->right;
 
@@ -68,7 +59,7 @@ void rb_left_rotate(struct rb_node *node, struct rb_tree *tree) {
 }
 // returns null if root is parent, returns node if invalid
 // if a = b then comp(a,b) = 0, if a > b than comp > 0, if a < b than comp < 0
-static struct rb_node *rb_find_parent(struct rb_node *node, struct rb_tree *tree,
+inline static struct rb_node *rb_find_parent(struct rb_node *node, struct rb_tree *tree,
 			       int (*comp)(struct rb_node *node_a, struct rb_node *node_b)) {
 	struct rb_node *parent = NULL;
 	struct rb_node *tmpn = tree->root;
@@ -86,13 +77,13 @@ static struct rb_node *rb_find_parent(struct rb_node *node, struct rb_tree *tree
 	}
 	return parent;
 }
-static enum rb_color get_color(struct rb_node *node) {
+inline static enum rb_color get_color(struct rb_node *node) {
 	if (node == NULL) {
 		return RB_BLACK;
 	}
 	return node->color;
 }
-static void rb_fix_insert(struct rb_node *node, struct rb_tree *tree) {
+inline static void rb_fix_insert(struct rb_node *node, struct rb_tree *tree) {
 	// case 1 - node is root (theoreticaly when inserting we know this thus this is redundant
 	struct rb_node *root = tree->root;
 	struct rb_node *parent = node->parent;
@@ -196,7 +187,7 @@ struct rb_node *rb_search(struct rb_node *key, struct rb_tree *tree,
 //  if node had no child:
 //  	returns linked in null_node
 //  returns moved up node if it has
-static struct rb_node *rb_delete_one_or_none_child(struct rb_node *node, struct rb_tree *tree, struct rb_node *null_node) {
+inline static struct rb_node *rb_delete_one_or_none_child(struct rb_node *node, struct rb_tree *tree, struct rb_node *null_node) {
 	bool has_left_child = node->left != NULL;
 	bool has_right_child = node->right != NULL;
 	assert(!(has_left_child && has_right_child) && "rb_delete_one_or_none_child called with 2 children");
@@ -258,7 +249,7 @@ struct rb_node *rb_get_min_subtree(struct rb_node *node) {
 }
 // node must be unlinked from the tree
 // node->color doesnt change
-static void rb_replace_node_all(struct rb_node *to_replace_node, struct rb_node *node, struct rb_tree *tree) {
+inline static void rb_replace_node_all(struct rb_node *to_replace_node, struct rb_node *node, struct rb_tree *tree) {
 	struct rb_node *parent = to_replace_node->parent;
 	if (parent == NULL) {
 		// to_replace_node is root
@@ -287,7 +278,7 @@ static void rb_replace_node_all(struct rb_node *to_replace_node, struct rb_node 
 	to_replace_node->left = NULL;
 	to_replace_node->right = NULL;
 }
-static void rb_fix_delete(struct rb_node *node, struct rb_tree *tree) {
+inline static void rb_fix_delete(struct rb_node *node, struct rb_tree *tree) {
 	if (node->parent == NULL) {
 		// case 1: node is root
 		node->color = RB_BLACK;

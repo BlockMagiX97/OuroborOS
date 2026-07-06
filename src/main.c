@@ -40,7 +40,7 @@ static volatile uint64_t limine_requests_end_marker[] = LIMINE_REQUESTS_END_MARK
 // clang-format on
 
 #include <libk/container_of.h>
-#include <libk/red_black_tree.h>
+#include <libk/data_structures/red_black_tree.h>
 
 #define ARR_CAP 1024
 struct test {

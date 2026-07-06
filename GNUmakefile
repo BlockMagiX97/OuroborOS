@@ -32,7 +32,7 @@ ifeq ($(TOOLCHAIN),llvm)
 endif
 
 # User controllable C flags.
-CFLAGS := -g -O0 -pipe -Wall
+CFLAGS := -g -O2 -pipe -Wall
 
 # User controllable C preprocessor flags. We set none by default.
 CPPFLAGS :=
@@ -76,7 +76,7 @@ override CFLAGS += \
 
 # Internal C preprocessor flags that should not be changed by the user.
 override CPPFLAGS := \
-    -I src \
+    -I include \
     $(CPPFLAGS) \
     -MMD \
     -MP

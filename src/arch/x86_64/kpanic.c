@@ -1,5 +1,5 @@
 #include <libk/stdio.h>
-#include <libk/util.h>
+#include <arch/x86_64/hcf.h>
 #include <arch/x86_64/interrupts/isr.h>
 #include <arch/x86_64/kpanic.h>
 #include <output/debug.h>
