@@ -1,6 +1,6 @@
 #ifndef OUROBOROS_PMM_PMM_H
 #define OUROBOROS_PMM_PMM_H
-#include <arch/curr/mem_addr.h>
+#include <arch/mem_addr.h>
 #include <libk/typedef.h>
 typedef uint64_t pfn_t;
 #define PFN_INVALID 0

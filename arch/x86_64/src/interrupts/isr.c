@@ -1,8 +1,8 @@
-#include <arch/x86_64/gdt.h>
-#include <arch/x86_64/interrupts/idt.h>
-#include <arch/x86_64/interrupts/isr.h>
-#include <arch/x86_64/mem_addr.h>
-#include <arch/x86_64/kpanic.h>
+#include <gdt.h>
+#include <interrupts/idt.h>
+#include <interrupts/isr.h>
+#include <arch/mem_addr.h>
+#include <kpanic.h>
 
 #include <libk/string.h>
 

@@ -1,9 +1,9 @@
-#include <arch/x86_64/portio.h>
-#include <arch/x86_64/serial.h>
+#include <portio.h>
+#include <arch/serial.h>
 #include <stdbool.h>
 #include <libk/typedef.h>
 
-err_t init_serial(uint16_t port) {
+err_t init_serial(serial_port_t port) {
    outb(port + 1, 0x00);    // Disable all interrupts
    outb(port + 3, 0x80);    // Enable DLAB (set baud rate divisor)
    outb(port + 0, 0x03);    // Set divisor to 3 (lo byte) 38400 baud
@@ -25,21 +25,21 @@ err_t init_serial(uint16_t port) {
    return SUCCESS;
 }
 
-bool serial_received(uint16_t port) {
+bool serial_received(serial_port_t port) {
    return inb(port + 5) & 1;
 }
 
-char read_serial(uint16_t port) {
+char read_serial(serial_port_t port) {
    while (serial_received(port) == 0);
 
    return inb(port);
 }
 
-bool is_transmit_empty(uint16_t port) {
+bool is_transmit_empty(serial_port_t port) {
    return inb(port + 5) & 0x20;
 }
 
-void write_serial(uint16_t port, uint8_t a) {
+void write_serial(serial_port_t port, uint8_t a) {
    while (is_transmit_empty(port) == 0);
 
    outb(port,a);

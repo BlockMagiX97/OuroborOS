@@ -1,5 +1,5 @@
 #include <libk/typedef.h>
-#include <arch/x86_64/mem_addr.h>
+#include <arch/mem_addr.h>
 
 #define PAGE_FRAME_SHIFT (12ul)
 #define PAGE_FRAME_SIZE (1ul<<PAGE_FRAME_SHIFT) /* 4KiB */

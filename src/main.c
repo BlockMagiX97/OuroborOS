@@ -10,8 +10,8 @@
 
 #include <output/debug.h>
 
-#include <arch/curr/init.h>
-#include <arch/curr/spinlock.h>
+#include <arch/init.h>
+#include <arch/spinlock.h>
 
 #include <pmm/pmm.h>
 

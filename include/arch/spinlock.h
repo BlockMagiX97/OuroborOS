@@ -1,9 +1,9 @@
-#ifndef OUROBOROS_ARCH_X86_64_SPINLOCK_H
-#define OUROBOROS_ARCH_X86_64_SPINLOCK_H
+#ifndef OUROBOROS_ARCH_SPINLOCK_H
+#define OUROBOROS_ARCH_SPINLOCK_H
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <arch/x86_64/typedefs.h>
+#include <arch/typedefs.h>
 
 #define CACHE_LINE_SIZE 64
 

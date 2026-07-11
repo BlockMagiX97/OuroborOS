@@ -2,8 +2,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <arch/x86_64/gdt.h>
-#include <arch/x86_64/mem_addr.h>
+#include <gdt.h>
+#include <arch/mem_addr.h>
 
 struct global_descriptor_table_entry {
 	uint16_t limit_low;

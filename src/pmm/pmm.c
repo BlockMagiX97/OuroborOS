@@ -7,9 +7,9 @@
 
 #include <compiler/wrap_builtin.h>
 
-#include <arch/curr/hhdm.h>
-#include <arch/curr/kpanic.h>
-#include <arch/curr/spinlock.h>
+#include <arch/hhdm.h>
+#include <arch/kpanic.h>
+#include <arch/spinlock.h>
 
 #include <vmm/paging.h>
 

@@ -1,0 +1,6 @@
+#ifndef OUROBOROS_ARCH_X86_64_INIT_H
+#define OUROBOROS_ARCH_X86_64_INIT_H
+
+
+
+#endif

@@ -1,7 +1,7 @@
 #include <libk/stdio.h>
-#include <arch/x86_64/hcf.h>
-#include <arch/x86_64/interrupts/isr.h>
-#include <arch/x86_64/kpanic.h>
+#include <hcf.h>
+#include <interrupts/isr.h>
+#include <kpanic.h>
 #include <output/debug.h>
 
 #define RED_FG "\033[38;2;255;0;0m"

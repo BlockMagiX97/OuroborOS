@@ -1,7 +1,7 @@
 #include <limine.h>
 #include <stdint.h>
 
-#include <arch/x86_64/mem_addr.h>
+#include <arch/mem_addr.h>
 
 // clang-format off
 __attribute__((used, section(".limine_requests")))

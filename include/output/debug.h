@@ -1,5 +1,5 @@
-#include <arch/curr/serial.h>
-#include <arch/curr/spinlock.h>
+#include <arch/serial.h>
+#include <arch/spinlock.h>
 #include <libk/typedef.h>
 
 err_t init_debug_output();

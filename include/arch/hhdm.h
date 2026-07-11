@@ -1,8 +1,8 @@
-#ifndef OUROBOROS_ARCH_X86_64_HHDM_H
-#define OUROBOROS_ARCH_X86_64_HHDM_H
+#ifndef OUROBOROS_ARCH_HHDM_H
+#define OUROBOROS_ARCH_HHDM_H
 
 #include <stdint.h>
-#include <arch/x86_64/mem_addr.h>
+#include <arch/mem_addr.h>
 
 extern uint64_t offset_hhdm;
 

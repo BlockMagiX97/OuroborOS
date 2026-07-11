@@ -1,6 +1,6 @@
-#include <arch/x86_64/hhdm.h>
-#include <arch/x86_64/gdt.h>
-#include <arch/x86_64/interrupts/idt.h>
+#include <arch/hhdm.h>
+#include <gdt.h>
+#include <interrupts/idt.h>
 
 // we want to share some stuff amongst cpus that only need to be loaded afterwards
 void init_boot_cpu() {

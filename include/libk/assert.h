@@ -1,5 +1,5 @@
-#include <arch/curr/hcf.h>
-#include <arch/curr/kpanic.h>
+#include <arch/hcf.h>
+#include <arch/kpanic.h>
 #include <compiler/wrap_builtin.h>
 #include <output/debug.h>
 

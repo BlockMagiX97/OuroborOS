@@ -2,9 +2,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <arch/x86_64/kpanic.h>
-
-#include <arch/x86_64/spinlock.h>
+#include <kpanic.h>
+#include <arch/spinlock.h>
 
 extern void acquireLock(spinlock_t *sl);
 extern void acquireLockWithFlags(spinlock_t *sl, flags_t *flags);

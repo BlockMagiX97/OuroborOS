@@ -5,6 +5,7 @@
 # Change as needed.
 override OUTPUT := ouroborOS
 IMG_FILE := bin/img.iso
+TARGET_ARCH := x86_64
 
 # User controllable toolchain and toolchain prefix.
 TOOLCHAIN :=
@@ -32,13 +33,13 @@ ifeq ($(TOOLCHAIN),llvm)
 endif
 
 # User controllable C flags.
-CFLAGS := -g -O2 -pipe -Wall
+CFLAGS := -Ofast -pipe -Wall
 
 # User controllable C preprocessor flags. We set none by default.
 CPPFLAGS :=
 
 # User controllable nasm flags.
-NASMFLAGS := -g
+NASMFLAGS := 
 
 # User controllable linker flags. We set none by default.
 LDFLAGS :=
@@ -77,6 +78,7 @@ override CFLAGS += \
 # Internal C preprocessor flags that should not be changed by the user.
 override CPPFLAGS := \
     -I include \
+    -I arch/$(TARGET_ARCH)/public_headers \
     $(CPPFLAGS) \
     -MMD \
     -MP
@@ -102,7 +104,7 @@ override SRCFILES := $(shell find -L src -type f 2>/dev/null | LC_ALL=C sort)
 override CFILES := $(filter %.c,$(SRCFILES))
 override ASFILES := $(filter %.S,$(SRCFILES))
 override NASMFILES := $(filter %.asm,$(SRCFILES))
-override OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
+override OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o)) obj/arch.o
 override HEADER_DEPS := $(addprefix obj/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d))
 # Default target. This must come first, before header dependencies.
 .PHONY: all
@@ -147,18 +149,20 @@ bin/$(OUTPUT): GNUmakefile linker.lds $(OBJ)
 	mkdir -p "$(dir $@)"
 	$(LD) $(LDFLAGS) $(OBJ) -o $@
 
+obj/arch.o:
+	make all BASEDIR=/home/blockmagix97/programming/c/mxk BASE_CFLAGS="$(CFLAGS)" BASE_NASMFLAGS="$(NASMFLAGS)" BASE_CPPFLAGS="$(CPPFLAGS)" -C arch/$(TARGET_ARCH) 
 # Compilation rules for *.c files.
-obj/%.c.o: %.c GNUmakefile
+obj/src/%.c.o: src/%.c GNUmakefile
 	mkdir -p "$(dir $@)"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compilation rules for *.S files.
-obj/%.S.o: %.S GNUmakefile
+obj/src/%.S.o: src/%.S GNUmakefile
 	mkdir -p "$(dir $@)"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compilation rules for *.asm (nasm) files.
-obj/%.asm.o: %.asm GNUmakefile
+obj/src/%.asm.o: src/%.asm GNUmakefile
 	mkdir -p "$(dir $@)"
 	nasm $(NASMFLAGS) $< -o $@
 
